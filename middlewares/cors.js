@@ -1,4 +1,4 @@
-const allowedCors = ["https://mentot-26.nomoredomainswork.ru/"];
+const allowedCors = ["https://mentot-26.nomoredomainswork.ru/","http://loclhost:3000/"];
 
 function cors(req,res,next) {
     const { origin } = req.headers;
