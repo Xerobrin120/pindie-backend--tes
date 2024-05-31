@@ -2,7 +2,7 @@ const games = require("../models/games");
 
 const findAllGames = async (req,res,next)=>{
     req.gamesArray = await games.find({})
-    .populate("category")
+    .populate("categories")
     .populate({
         path: "users",
         select: "-password"
@@ -14,7 +14,7 @@ const findAllGames = async (req,res,next)=>{
         try{
     req.game = await games
     .findById(req.params.id)
-    .populate("category")
+    .populate("categories")
     .populate({
         path: "users",
         select: "-password",

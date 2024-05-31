@@ -12,12 +12,14 @@ const sendUsersCreated = (req,res)=>{
 };
 const sendUsersDelete = (req,res)=>{
     res.setHeader("Content-Type","application/json");
-    console.log(req.users)
-    res.end(JSON.stringify(req.users));
+    res.end(JSON.stringify(req.user));
 };
 const sendUsersUpdated = (req,res)=>{
     res.setHeader("Content-Type","application/json");
-    console.log(req.users)
-    res.end(JSON.stringify(req.users));
+    res.end(JSON.stringify(req.user));
 };
-module.exports = {sendAllUsers,sendUsersById,sendUsersCreated,sendUsersDelete,sendUsersUpdated};
+const sendMe = (req,res) =>{
+    res.setHeader("Content-Type","application/json");
+    res.end(JSON.stringify(req.user.user));
+}
+module.exports = {sendAllUsers,sendUsersById,sendUsersCreated,sendUsersDelete,sendUsersUpdated,sendMe};

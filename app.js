@@ -4,6 +4,8 @@ const bodyParser = require("body-parser")
 
 const connectToDatabase = require("./database/connect");
 const apiRouter = require("./routes/api");
+const cookieParser = require("cookie-parser");
+const pagesRouter = require("./routes/pages");
 
 const PORT = 3000;
 
@@ -11,9 +13,10 @@ const app = express();
 connectToDatabase();
 
 app.use(
+    cookieParser(),
     bodyParser.json(),
-    express.static(path.join(__dirname,"public")),
-apiRouter
+    pagesRouter,
+    apiRouter
 );
 
 app.listen(PORT,() => {

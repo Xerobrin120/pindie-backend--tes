@@ -33,7 +33,4 @@ userSchema.statics.findUserByCredentials = function(email,password){
       });
     });
 };
-
-const users = mongoose.model("users",userSchema);
-
-module.exports = users;
+module.exports = mongoose.model('users', userSchema); 
