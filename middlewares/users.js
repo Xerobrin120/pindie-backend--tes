@@ -2,6 +2,7 @@ const users = require("../models/users");
 const bcrypt = require("bcryptjs");
 
 const findAllUsers = async (req,res,next)=>{
+    console.log("GET /api/users");
     req.usersArray = await users.find({})
     next();
 };
@@ -60,5 +61,41 @@ const hashPasswords = async (req,res,next)=>{
   res.status(400).send({message: "Ошибка при хешировании пароля"});
     }
 
-}
-module.exports = {findAllUsers,findUsersById,createUsers,deleteUser,updateUser,hashPasswords};
+};
+const checkEmptyNameAndEmailAndPassword = async (req, res, next) => {
+    if (!req.body.username || !req.body.email || !req.body.password) {
+      res.setHeader("Content-Type", "application/json");
+      res
+        .status(400)
+        .send(JSON.stringify({ message: "Введите имя, email и пароль" }));
+    } else {
+      next();
+    }
+  };
+  
+  const checkEmptyNameAndEmail = async (req, res, next) => {
+    if (!req.body.username || !req.body.email) {
+      res.setHeader("Content-Type", "application/json");
+      res.status(400).send(JSON.stringify({ message: "Введите имя и email" }));
+    } else {
+      next();
+    }
+  };
+  
+  const checkIsUserExists = async (req, res, next) => {
+    const isInArray = req.usersArray.find((user) => {
+      return req.body.email === user.email;
+    });
+    if (isInArray) {
+      res.setHeader("Content-Type", "application/json");
+      res
+        .status(400)
+        .send(
+          JSON.stringify({ message: "Пользователь с таким email уже существует" })
+        );
+    } else {
+      next();
+    }
+  };
+  
+module.exports = {findAllUsers,findUsersById,createUsers,deleteUser,updateUser,hashPasswords,checkIsUserExists,checkEmptyNameAndEmail,checkEmptyNameAndEmailAndPassword};

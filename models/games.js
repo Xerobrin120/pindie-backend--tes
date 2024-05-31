@@ -23,16 +23,31 @@ const gameSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    // Добавляем поле для списка пользователей
-    users: [{
+    users: [
+        {
       type: mongoose.Schema.Types.ObjectId,
       ref: users,
-    }],
-    // Добавляем поле для списка категорий
-    categories: [{
+    }
+],
+    categories: [
+        {
       type: mongoose.Schema.Types.ObjectId,
       ref: categories,
-    }],
+    }
+],
   });
-  
+  gameSchema.statics.findGameByCategory = function (category) {
+    return this.find({})
+      .populate({
+        path: "categories",
+        match: { name: category },
+      })
+      .populate({
+        path: "users",
+        select: "-password",
+      })
+      .then((games) => {
+        return games.filter((game) => game.categories.length > 0);
+      });
+  };
   module.exports = mongoose.model('games', gameSchema); 
